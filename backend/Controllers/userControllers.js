@@ -60,6 +60,7 @@ const loginUser = async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
+    sameSite: "none",
   };
 
   if (user && (await user.comparePassword(password))) {
@@ -67,15 +68,20 @@ const loginUser = async (req, res) => {
       success: true,
       message: "Login Successfull",
       user: user,
-    });
-  } else {
-    res.status(401);
-    throw new Error("Invalid Password");
+    })
   }
-};
+}
 
-getUser = async (req, res) => {
+
+const getUser = async (req, res) => {
   const user = req.user;
+
+  if (!req.user) {
+    return res.status(400).json({
+      success: false,
+      message: "User not found",
+    });
+  }
 
   res.status(200).json({
     success: true,
@@ -86,21 +92,23 @@ getUser = async (req, res) => {
 
 const logoutUser = async (req, res) => {
   try {
-    try {
-      res.cookie("token", null, {
-        expires: new Date(Date.now()),
-        httpOnly: true,
-      });
-    } catch (error) {
-      throw new Error("Error logging out");
-    }
+    // Clear the cookie
+    res.cookie("token", null, {
+      expires: new Date(Date.now()), // Immediately expire the cookie
+      httpOnly: true, // Ensure the cookie is HTTP-only for security
+    });
 
-    res.status(200).json({
+    // Send a success response
+    return res.status(200).json({
       success: true,
       message: "Logged Out",
     });
   } catch (error) {
-    throw new Error("");
+    // Handle unexpected errors gracefully
+    return res.status(500).json({
+      success: false,
+      error: "Failed to log out"
+    });
   }
 };
-module.exports = { registerUser, loginUser, logoutUser };
+module.exports = { registerUser, loginUser, getUser, logoutUser };

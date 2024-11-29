@@ -7,7 +7,7 @@ const { isAuthenticated } = require("../middlewares/authMiddleware");
 
 
 
-const { registerUser, loginUser, logoutUser } = require('../Controllers/userControllers');
+const { registerUser, loginUser, getUser, logoutUser } = require('../Controllers/userControllers');
 
 
 
@@ -18,7 +18,9 @@ router.post('/register', upload.fields([
     }
   ]), validateUserRegistration, handleValidationErrors, registerUser);
   
-router.post('/login', validateUserLogin, handleValidationErrors, loginUser);
+router.post('/login', upload.none(), validateUserLogin, handleValidationErrors, loginUser);
+
+router.get('/getuser', isAuthenticated, getUser);
 
 router.get('/logout', logoutUser);
 

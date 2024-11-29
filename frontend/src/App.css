@@ -4,3 +4,8 @@
   box-sizing: border-box;
   font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
+body {
+  background-image: url(https://penzu.com/stylesheets/themes/page/basic/background.jpg);
+  z-index: -10;
+}

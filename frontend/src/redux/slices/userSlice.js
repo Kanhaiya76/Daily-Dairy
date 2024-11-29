@@ -21,7 +21,23 @@ export const loginUser = createAsyncThunk(
   "user/login",
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}/login`, credentials);
+      const response = await axios.post(`${API_URL}/login`, credentials, {
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const fetchCurrentUser = createAsyncThunk(
+  "user/getuser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${API_URL}/getuser`, {
+        withCredentials: true,
+      });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -32,8 +48,10 @@ export const loginUser = createAsyncThunk(
 export const logoutUser = createAsyncThunk(
   "user/logout",
   async (_, { dispatch }) => {
-    // Perform logout logic if needed (e.g., server session invalidation)
-    dispatch(clearUser());
+      await axios.get(`${API_URL}/logout`, {
+        withCredentials: true,
+      });
+      dispatch(clearUser()); // Clears user data on successful logout
   }
 );
 
@@ -74,6 +92,17 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload.error;
       })
+
+      // Get User
+      .addCase(fetchCurrentUser.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.isAuthenticated = true;
+      })
+      .addCase(fetchCurrentUser.rejected, (state) => {
+        state.user = null;
+        state.isAuthenticated = false;
+      })
+
       // Login User
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
@@ -88,7 +117,7 @@ const userSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.error;
-      });
+      })
   },
 });
 

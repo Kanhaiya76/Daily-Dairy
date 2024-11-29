@@ -1,9 +1,17 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar.jsx";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { fetchCurrentUser } from "../redux/slices/userSlice";
 
 const Layout = () => {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCurrentUser());
+  }, []);
 
   const { isAuthenticated } = useSelector(
     (state) => state.user

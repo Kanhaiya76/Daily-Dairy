@@ -6,7 +6,7 @@ const isAuthenticated = async (req, res, next) => {
     const { token } = req.cookies;
   
     if (!token) {
-      res.status(401).json({
+      return res.status(401).json({
         success: false,
         message: "Please login to access this resource",
       });
@@ -17,7 +17,7 @@ const isAuthenticated = async (req, res, next) => {
     const user = await User.findById(decodedToken.id);
   
     if (!user) {
-      res.status(401).json({
+      return res.status(401).json({
         success: false,
         message: "Invalid Access Token",
       });
