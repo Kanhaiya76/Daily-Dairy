@@ -13,6 +13,7 @@ const {
   updateJournalImages,
   deleteJournal,
   getAllJournals,
+  getOneJournal
 } = require("../Controllers/journalController");
 
 const { isAuthenticated } = require("../middlewares/authMiddleware");
@@ -41,7 +42,7 @@ router.put(
 );
 
 router.put(
-  "/update/images/:id",
+  "/update/:id",
   isAuthenticated,
   upload.fields([
     {
@@ -58,5 +59,7 @@ router.put(
 router.delete("/delete/:id", isAuthenticated, deleteJournal);
 
 router.get("/alljournal", getAllJournals);
+
+router.get("/:id", getOneJournal);
 
 module.exports = router;

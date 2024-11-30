@@ -20,16 +20,11 @@ const Register = () => {
 
     const formData = new FormData();
     const profilePicture = e.target.elements.profilePicture?.files[0];
-    console.log(profilePicture);
 
     formData.append("username", username);
     formData.append("email", email);
     formData.append("password", password);
     if (profilePicture) formData.append("profilePicture", profilePicture);
-
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
 
     dispatch(registerUser(formData));
 

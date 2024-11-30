@@ -81,7 +81,6 @@ const updateJournalImages = async (req, res) => {
         const result = await uploadOnCloudinary(image.path);
         images.push(result.secure_url);
       } catch (uploadError) {
-        console.error("Error uploading image to Cloudinary:", uploadError);
         return res.status(500).json({
           success: false,
           message: "Failed to upload images",
@@ -137,10 +136,26 @@ const getAllJournals = async (req, res) => {
   }
 };
 
+const getOneJournal = async (req, res) => {
+  const journalId = req.params.id;
+
+  try {
+    const journal = await Journal.findById(journalId);
+    res.status(200).json({
+      success: true,
+      message: "Journal fetched successfully",
+      journal: journal,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   addJournal,
   updateJournalContent,
   updateJournalImages,
   getAllJournals,
+  getOneJournal,
   deleteJournal
 };
