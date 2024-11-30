@@ -1,10 +1,9 @@
-import React from 'react'
-import { NavLink, useNavigate } from 'react-router-dom';
+import React from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser, clearMessage } from "../redux/slices/userSlice";
 import toast from "react-hot-toast";
-import { useEffect } from 'react';
-
+import { useEffect } from "react";
 
 const Register = () => {
   const [username, setUsername] = React.useState("");
@@ -16,15 +15,27 @@ const Register = () => {
   const dispatch = useDispatch();
   const { message, error } = useSelector((state) => state.user);
 
-
   function onSubmit(e) {
     e.preventDefault();
-    dispatch(registerUser({username, email, password}))
+
+    const formData = new FormData();
+    const profilePicture = e.target.elements.profilePicture?.files[0];
+    console.log(profilePicture);
+
+    formData.append("username", username);
+    formData.append("email", email);
+    formData.append("password", password);
+    if (profilePicture) formData.append("profilePicture", profilePicture);
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
+    dispatch(registerUser(formData));
 
     setUsername("");
     setEmail("");
     setPassword("");
-
   }
 
   useEffect(() => {
@@ -41,7 +52,7 @@ const Register = () => {
   return (
     <div>
       <div className="w-full flex flex-col relative">
-        <nav className='w-full fixed z-10'>
+        <nav className="w-full fixed z-10">
           <div className="w-full py-6 px-28 bg-[#fb392b] text-3xl text-white flex justify-between items-center font-normal mb-16">
             <div>
               <h1>Memoir</h1>
@@ -63,51 +74,64 @@ const Register = () => {
             </span>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <input
-              name="username"
-              className="border border-black p-4 text-3xl rounded-lg opacity-60"
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <label className="text-xl tracking-widest" htmlFor="username">
-              USERNAME
-            </label>
-          </div>
+          <form className="flex flex-col gap-8" onSubmit={onSubmit}>
+            <div className="flex flex-col gap-2">
+              <input
+                name="username"
+                className="border border-black p-4 text-3xl rounded-lg opacity-60"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <label className="text-xl tracking-widest" htmlFor="username">
+                USERNAME
+              </label>
+            </div>
 
-          <div className="flex flex-col gap-2">
-            <input
-              name="email"
-              className="border border-black p-4 text-3xl rounded-lg opacity-60"
-              type="text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <label className="text-xl tracking-widest" htmlFor="email">
-              EMAIL ADDRESS
-            </label>
-          </div>
+            <div className="flex flex-col gap-2">
+              <input
+                name="email"
+                className="border border-black p-4 text-3xl rounded-lg opacity-60"
+                type="text"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <label className="text-xl tracking-widest" htmlFor="email">
+                EMAIL ADDRESS
+              </label>
+            </div>
 
-          <div className="flex flex-col gap-2">
-            <input
-              name="password"
-              className="border border-black p-4 text-3xl rounded-lg opacity-60"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <label className="text-xl tracking-widest" htmlFor="password">
-              PASSWORD
-            </label>
-          </div>
+            <div className="flex flex-col gap-2">
+              <input
+                name="password"
+                className="border border-black p-4 text-3xl rounded-lg opacity-60"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <label className="text-xl tracking-widest" htmlFor="password">
+                PASSWORD
+              </label>
+            </div>
 
-          <button
-            onClick={onSubmit}
-            className="flex justify-center bg-blue-500 hover:bg-blue-700 py-6 px-12 text-2xl font-bold text-white rounded-lg hover:gap-2 transition-all duration-200 w-72"
-          >
-            Create Account
-          </button>
+            <div className="flex flex-col gap-2">
+              <input
+                name="profilePicture"
+                className="border border-black p-4 text-3xl rounded-lg opacity-60"
+                type="file"
+              />
+              <label className="text-xl tracking-widest" htmlFor="password">
+                PROFILE PICTURE
+              </label>
+            </div>
+
+            <button
+              type="submit"
+              className="flex justify-center bg-blue-500 hover:bg-blue-700 py-6 px-12 text-2xl font-bold text-white rounded-lg hover:gap-2 transition-all duration-200 w-72"
+            >
+              Create Account
+            </button>
+          </form>
 
           <div className="flex gap-2 mx-auto text-xl opacity-70">
             <h1>Already have an account?</h1>
@@ -119,6 +143,6 @@ const Register = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Register
+export default Register;

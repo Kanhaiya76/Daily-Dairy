@@ -1,8 +1,16 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+
+  const navigate = useNavigate();
+
+  function RegisterRoute() {
+    navigate("/register");
+  }
+
   return (
     <div>
       <div className="w-full flex flex-col relative">
@@ -18,8 +26,8 @@ const Home = () => {
               <div>
                 <NavLink to="/login">Login</NavLink>
               </div>
-              <div className="flex items-center gap-0 hover:gap-2 transition-all duration-200 w-40">
-                <NavLink to="/register">Register</NavLink>
+              <div className="flex items-center gap-0 hover:gap-2 transition-all duration-200 w-40 hover:cursor-pointer" onClick={RegisterRoute}>
+                <h1>Register</h1>
                 <ArrowRight size={35} />
               </div>
             </div>
@@ -33,8 +41,8 @@ const Home = () => {
               <h1 className="text-8xl text-center 2xl:text-left">
                 Your own Private <br /> Journal.
               </h1>
-              <div className="flex justify-center bg-blue-500 hover:bg-blue-700 py-6 px-12 text-2xl font-bold text-white rounded-lg gap-0 hover:gap-2 transition-all duration-200 w-72 group hover:cursor-pointer">
-                <NavLink to="/register">Register</NavLink>
+              <div className="flex justify-center bg-blue-500 hover:bg-blue-700 py-6 px-12 text-2xl font-bold text-white rounded-lg gap-0 hover:gap-2 transition-all duration-200 w-72 group hover:cursor-pointer" onClick={RegisterRoute}>
+                <h1>Register</h1>
                 <ArrowRight size={35} className="text-blue-300" />
               </div>
             </div>

@@ -23,7 +23,7 @@ router.post(
   upload.fields([
     {
       name: "images",
-      maxcounts: 5,
+      maxCount: 5,
     },
   ]),
   validateJournalEntry,

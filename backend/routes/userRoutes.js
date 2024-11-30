@@ -11,12 +11,13 @@ const { registerUser, loginUser, getUser, logoutUser } = require('../Controllers
 
 
 
-router.post('/register', upload.fields([
-    {
-      name: "profilePicture",
-      maxcounts: 1,
-    }
-  ]), validateUserRegistration, handleValidationErrors, registerUser);
+router.post(
+  "/register",
+  upload.single("profilePicture"),
+  validateUserRegistration,
+  handleValidationErrors,
+  registerUser
+);
   
 router.post('/login', upload.none(), validateUserLogin, handleValidationErrors, loginUser);
 

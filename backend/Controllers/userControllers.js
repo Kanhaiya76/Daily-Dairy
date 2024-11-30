@@ -5,43 +5,52 @@ const registerUser = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
 
+    // Check if user already exists
     const userExists = await User.findOne({ email });
-
     if (userExists) {
-      res.status(400);
-      throw new Error("User already exists");
+      return res.status(400).json({
+        success: false,
+        error: "User already exists",
+      });
     }
 
-    let profilePictureLocalPath;
-    if (
-      req.files &&
-      Array.isArray(req.files.profilePicture) &&
-      req.files.profilePicture.length > 0
-    ) {
-      profilePictureLocalPath = req.files.profilePicture[0].path;
+    // Handle file upload
+    let profilePictureUrl = ""; // Default empty or fallback URL
+    if (req.file) {
+      try {
+        const uploadResult = await uploadOnCloudinary(req.file.path);
+        profilePictureUrl = uploadResult?.url || "";
+      } catch (uploadError) {
+        return res.status(500).json({
+          success: false,
+          error: "Failed to upload profile picture",
+        });
+      }
     }
 
-    const result = await uploadOnCloudinary(profilePictureLocalPath);
-
+    // Create new user
     const user = await User.create({
-      username: username,
-      email: email,
-      password: password,
-      profilePicture: result?.url || "",
+      username,
+      email,
+      password,
+      profilePicture: profilePictureUrl,
     });
 
+    // Respond with success
     if (user) {
-      res.status(201).json({
+      return res.status(201).json({
         success: true,
-        message: "Registeration successfull",
-        user: user,
+        message: "Registration successful",
+        user,
       });
     } else {
-      res.status(400);
-      throw new Error("Internal Server Error");
+      return res.status(500).json({
+        success: false,
+        error: "Failed to create user",
+      });
     }
   } catch (error) {
-    next(error)
+    next(error); // Pass error to middleware
   }
 };
 

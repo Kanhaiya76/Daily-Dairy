@@ -9,10 +9,18 @@ export const registerUser = createAsyncThunk(
   "user/register",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}/register`, userData);
+      const config = {
+        headers: { "Content-Type": "multipart/form-data" },
+      };
+      const response = await axios.post(`${API_URL}/register`, userData, config);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      const errorMessage =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        "An unexpected error occurred";
+      console.error("Register User Error:", error); // For debugging purposes (remove in production)
+      return rejectWithValue({ error: errorMessage });
     }
   }
 );
