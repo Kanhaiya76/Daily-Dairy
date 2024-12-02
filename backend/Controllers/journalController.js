@@ -18,7 +18,6 @@ const addJournal = async (req, res) => {
         const result = await uploadOnCloudinary(image.path);
         images.push(result?.secure_url);
       } catch (uploadError) {
-        console.error("Error uploading image to Cloudinary:", uploadError);
         return res.status(500).json({
           success: false,
           message: "Failed to upload images",
@@ -122,7 +121,7 @@ const deleteJournal = async (req, res) => {
 };
 
 const getAllJournals = async (req, res) => {
-  const userId = req.user._id;
+  const userId = req.user.id;
 
   try {
     const journals = await Journal.find({ userId: userId });

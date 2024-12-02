@@ -39,7 +39,9 @@ const Login = () => {
       <nav>
         <div className="w-full py-6 px-28 bg-[#fb392b] text-3xl text-white flex justify-between items-center font-normal mb-16">
           <div>
-            <h1>Memoir</h1>
+            <h1 onClick={() => navigate("/")} className="hover:cursor-pointer">
+              Memoir
+            </h1>
           </div>
 
           <div>
@@ -53,7 +55,7 @@ const Login = () => {
           <h1>Log In</h1>
         </div>
 
-        <div className='flex flex-col mx-20 gap-10'>
+        <div className="flex flex-col mx-20 gap-10">
           <div className="flex flex-col gap-2 w-full">
             <input
               name="email"

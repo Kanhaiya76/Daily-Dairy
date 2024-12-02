@@ -50,7 +50,12 @@ const Register = () => {
         <nav className="w-full fixed z-10">
           <div className="w-full py-6 px-28 bg-[#fb392b] text-3xl text-white flex justify-between items-center font-normal mb-16">
             <div>
-              <h1>Memoir</h1>
+              <h1
+                onClick={() => navigate("/")}
+                className="hover:cursor-pointer"
+              >
+                Memoir
+              </h1>
             </div>
 
             <div>
@@ -112,6 +117,7 @@ const Register = () => {
             <div className="flex flex-col gap-2">
               <input
                 name="profilePicture"
+                accept="image/*"
                 className="border border-black p-4 text-3xl rounded-lg opacity-60"
                 type="file"
               />

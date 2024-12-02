@@ -58,7 +58,7 @@ router.put(
 
 router.delete("/delete/:id", isAuthenticated, deleteJournal);
 
-router.get("/alljournal", getAllJournals);
+router.get("/alljournal", isAuthenticated, getAllJournals);
 
 router.get("/:id", getOneJournal);
 

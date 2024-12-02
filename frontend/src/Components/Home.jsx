@@ -19,7 +19,7 @@ const Home = () => {
         <nav className="w-full fixed z-10">
           <div className="w-full py-10 px-28 bg-[#fb392b] text-3xl text-white flex justify-between items-center font-normal mb-28">
             <div>
-              <h1>Memoir</h1>
+              <h1 onClick={() => navigate("/")} className="hover:cursor-pointer">Memoir</h1>
             </div>
 
             <div className="flex gap-12 items-center">
