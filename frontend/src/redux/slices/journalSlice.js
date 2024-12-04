@@ -27,8 +27,6 @@ export const updateJournal = createAsyncThunk(
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       };
-      
-      
       const response = await axios.put(`${API_URL}/update/${id}`, journalData, config);
       return response.data;
     } catch (error) {

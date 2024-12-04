@@ -45,8 +45,7 @@ const addJournal = async (req, res) => {
 
 const updateJournal = async (req, res) => {
   const journalId = req.params.id;
-  console.log("hello");
-
+  
   const { content } = req.body;
 
   const images = [];
