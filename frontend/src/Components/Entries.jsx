@@ -56,17 +56,20 @@ const Entries = () => {
 
   useEffect(() => {
     dispatch(getAllJournals());
-
-    if (message) {
-      toast.success(message);
-      dispatch(clearMessage());
-    }
-
-    if (error) {
-      toast.error(error);
-      dispatch(clearMessage());
-    }
   }, []);
+
+  useEffect(() => {
+     if (message) {
+       toast.success(message);
+       dispatch(clearMessage());
+     }
+
+     if (error) {
+       toast.error(error);
+       dispatch(clearMessage());
+     }
+  }, [error, message, dispatch])
+  
 
   return (
     <div className="w-full mt-40 mb-20 flex justify-center">
@@ -87,7 +90,7 @@ const Entries = () => {
                 onClick={() => navigate("/journal/new")}
               >
                 <CirclePlus size={35} />
-                <h1>New Entry</h1>
+                <h1>Today's Entry</h1>
               </div>
             </div>
           </div>

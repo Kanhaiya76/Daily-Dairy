@@ -19,33 +19,17 @@ export const addJournal = createAsyncThunk(
   }
 );
 
-export const updateJournalContent = createAsyncThunk(
-  "journal/updateJournalContent",
-  async ({ id, content }, { rejectWithValue }) => {
-    try {
-      const config = {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true,
-      };
-      const response = await axios.put(`${API_URL}/update/content/${id}`, {
-        content,
-      }, config);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
-    }
-  }
-);
-
 export const updateJournal = createAsyncThunk(
   "journal/updateJournalImages",
-  async ({ id, content ,images }, { rejectWithValue }) => {
+  async ( {id, journalData}, { rejectWithValue }) => {
     try {
       const config = {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       };
-      const response = await axios.put(`${API_URL}/update/${id}`, { content, images }, config);
+      
+      
+      const response = await axios.put(`${API_URL}/update/${id}`, journalData, config);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -78,6 +62,22 @@ export const getOneJournal = createAsyncThunk(
         withCredentials: true,
       };
       const response = await axios.get(`${API_URL}/${id}`, config);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+export const getTodayJournal = createAsyncThunk(
+  "journal/getTodayJournal",
+  async (_, { rejectWithValue }) => {
+    try {
+      const config = {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+      };
+      const response = await axios.get(`${API_URL}/today`, config);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -133,22 +133,24 @@ export const journalSlice = createSlice({
         state.error = action.payload.error;
       });
 
-    // Update journal content
-    builder
-      .addCase(updateJournalContent.pending, (state) => {
+    // Get Today Journal
+      builder
+      .addCase(getTodayJournal.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateJournalContent.fulfilled, (state, action) => {
+      .addCase(getTodayJournal.fulfilled, (state, action) => {
         state.loading = false;
-        state.message = "Journal content updated successfully";
+        state.entry = action.payload.journal;
       })
-      .addCase(updateJournalContent.rejected, (state, action) => {
+      .addCase(getTodayJournal.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload.error;
+        state.entry = null;
+        state.error = action.payload.error; 
       });
+      
 
-    // Update journal images
+    // Update journal
     builder
       .addCase(updateJournal.pending, (state) => {
         state.loading = true;
@@ -156,12 +158,14 @@ export const journalSlice = createSlice({
       })
       .addCase(updateJournal.fulfilled, (state, action) => {
         state.loading = false;
-        state.message = "Journal images updated successfully";
+        state.message = "Journal updated successfully";
       })
       .addCase(updateJournal.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload.error;
+        console.log(action.error.message)
+        state.error = action.payload?.error || action.error.message;
       });
+
 
     // Get all journals
     builder
@@ -190,6 +194,7 @@ export const journalSlice = createSlice({
       })
       .addCase(getOneJournal.rejected, (state, action) => {
         state.loading = false;
+        state.entry = null;
         state.error = action.payload.error;
       });
 

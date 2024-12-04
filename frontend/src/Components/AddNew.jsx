@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { addJournal, clearMessage } from '../redux/slices/journalSlice';
+import { addJournal, clearMessage, getTodayJournal, updateJournal } from '../redux/slices/journalSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -40,7 +40,21 @@ const AddNew = () => {
   };
 
   const dispatch = useDispatch();
-  const { message, error } = useSelector((state) => state.journal)
+  const { message, error, entry } = useSelector((state) => state.journal)
+
+  const { user } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(getTodayJournal());
+  }, [user]);
+
+  useEffect(() => {
+    if (entry) {
+      setContent(entry.content);
+      setSelectedImages([]);
+    }
+  }, [entry]);
+
   
   function handleSubmit(e) {
     e.preventDefault();
@@ -51,7 +65,12 @@ const AddNew = () => {
       formdata.append("images", image);
     });
 
-    dispatch(addJournal(formdata));
+    console.log(formdata);
+    if(!entry) {
+      dispatch(addJournal(formdata));
+    } else {
+      dispatch(updateJournal({id: entry?._id, journalData: formdata}))
+    }
   }
 
   useEffect(() => {
@@ -68,12 +87,17 @@ const AddNew = () => {
   }, [message, error]);
 
   useEffect(() => {
-    // Generate previews for the selected images
-    const previews = selectedImages.map((file, index) => {
-      const reader = new FileReader();
+    const previews = selectedImages.map((file) => {
       return new Promise((resolve) => {
-        reader.onloadend = () => resolve(reader.result);
-        reader.readAsDataURL(file);
+        if (file instanceof File) {
+          // If it's a File object, use FileReader
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.readAsDataURL(file);
+        } else {
+          // If it's a URL, just resolve with the URL
+          resolve(file);
+        }
       });
     });
 
@@ -81,6 +105,7 @@ const AddNew = () => {
       setImagePreviews(previewUrls);
     });
   }, [selectedImages]);
+
 
 
   const date = new Date();
@@ -99,7 +124,7 @@ const AddNew = () => {
             </div>
             <div>
               <button type="submit" className="italic text-blue-600 opacity-70">
-                Save now
+                {entry ? "Update now" : "Save now"}
               </button>
             </div>
           </div>

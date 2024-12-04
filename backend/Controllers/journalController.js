@@ -43,28 +43,9 @@ const addJournal = async (req, res) => {
   }
 };
 
-const updateJournalContent = async (req, res) => {
-  const { content } = req.body;
+const updateJournal = async (req, res) => {
   const journalId = req.params.id;
-
-  try {
-    const journal = await Journal.findByIdAndUpdate(
-      journalId,
-      { content: content },
-      { new: true }
-    );
-    res.status(200).json({
-      success: true,
-      message: "Journal updated successfully",
-      journal: journal,
-    });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
-const updateJournalImages = async (req, res) => {
-  const journalId = req.params.id;
+  console.log("hello");
 
   const { content } = req.body;
 
@@ -92,7 +73,10 @@ const updateJournalImages = async (req, res) => {
   try {
     const journal = await Journal.findByIdAndUpdate(
       journalId,
-      { content: content, images: images },
+      { 
+        content: content,
+        images: images 
+      },
       { new: true }
     );
     res.status(200).json({
@@ -150,11 +134,46 @@ const getOneJournal = async (req, res) => {
   }
 };
 
+const getTodayJournal = async (req, res) => {
+  const userId = req.user.id;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  today.toISOString();
+
+  const endOfDay = new Date();
+  endOfDay.setHours(23, 59, 59, 999);
+  endOfDay.toISOString();
+
+  try {
+    const journal = await Journal.findOne({
+      userId: userId,
+      createdAt: { $gte: today, $lte: endOfDay },
+    });
+
+    if (!journal) {
+      return res.status(404).json({
+        success: false,
+        message: "No journal entry found for today",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Journal fetched successfully",
+      journal: journal,
+    });
+  } catch (error) {
+    console.error("Error fetching today's journal:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 module.exports = {
   addJournal,
-  updateJournalContent,
-  updateJournalImages,
+  updateJournal,
   getAllJournals,
   getOneJournal,
-  deleteJournal
+  deleteJournal,
+  getTodayJournal,
 };

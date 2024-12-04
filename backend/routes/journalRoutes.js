@@ -9,11 +9,11 @@ const {
 
 const {
   addJournal,
-  updateJournalContent,
-  updateJournalImages,
+  updateJournal,
   deleteJournal,
   getAllJournals,
-  getOneJournal
+  getOneJournal,
+  getTodayJournal
 } = require("../Controllers/journalController");
 
 const { isAuthenticated } = require("../middlewares/authMiddleware");
@@ -33,33 +33,26 @@ router.post(
 );
 
 router.put(
-  "/update/content/:id",
-  isAuthenticated,
-  upload.none(),
-  validateJournalEntry,
-  handleValidationErrors,
-  updateJournalContent
-);
-
-router.put(
   "/update/:id",
   isAuthenticated,
   upload.fields([
     {
       name: "images",
-      maxcounts: 5,
+      maxcount: 5,
     },
   ]),
   validateJournalEntry,
   handleValidationErrors,
-  isAuthenticated,
-  updateJournalImages
+  updateJournal
 );
 
 router.delete("/delete/:id", isAuthenticated, deleteJournal);
 
 router.get("/alljournal", isAuthenticated, getAllJournals);
 
+router.get("/today", isAuthenticated, getTodayJournal);
+
 router.get("/:id", getOneJournal);
+
 
 module.exports = router;
