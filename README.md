@@ -71,6 +71,107 @@ The repository is organized into two main directories:
 
 3. Access the application at `http://localhost:5173` (or the port specified by Vite)
 
+## API Endpoints
+
+### User Routes
+
+- `POST /api/user/register`: Register a new user
+  - Content-Type: multipart/form-data
+  - Body:
+    - username: string (required)
+    - email: string (required)
+    - password: string (required)
+    - profilePicture: file (optional)
+  - Responses:
+    - 200 OK: User registered successfully
+      ```json
+      {
+        "success": true,
+        "message": "User registered successfully",
+        "user": {
+          "username": "string",
+          "email": "string",
+          "profilePicture": "string (URL)"
+        }
+      }
+      ```
+    - 400 Bad Request: Validation error or user already exists
+    - 500 Internal Server Error: Server error during registration
+
+- `POST /api/user/login`: Log in a user
+  - Content-Type: application/json
+  - Body:
+    - email: string (required)
+    - password: string (required)
+  - Responses:
+    - 200 OK: User logged in successfully
+      ```json
+      {
+        "success": true,
+        "message": "User logged in successfully",
+        "user": {
+          "username": "string",
+          "email": "string",
+          "profilePicture": "string (URL)"
+        }
+      }
+      ```
+    - 400 Bad Request: Invalid credentials
+    - 500 Internal Server Error: Server error during login
+
+- `GET /api/user/getuser`: Get the current user's information
+  - Headers:
+    - Cookie: token=<jwt_token>
+  - Responses:
+    - 200 OK: User information retrieved successfully
+      ```json
+      {
+        "success": true,
+        "user": {
+          "username": "string",
+          "email": "string",
+          "profilePicture": "string (URL)"
+        }
+      }
+      ```
+    - 401 Unauthorized: User not authenticated
+    - 500 Internal Server Error: Server error while fetching user data
+
+- `GET /api/user/logout`: Log out the current user
+  - Responses:
+    - 200 OK: User logged out successfully
+      ```json
+      {
+        "success": true,
+        "message": "User logged out successfully"
+      }
+      ```
+    - 500 Internal Server Error: Server error during logout
+
+### Journal Routes
+
+- `POST /api/journal/add`: Add a new journal entry
+  - Requires: Authentication, content
+  - Optional: images (up to 5 file uploads)
+
+- `PUT /api/journal/update/:id`: Update an existing journal entry
+  - Requires: Authentication, journal entry ID
+  - Optional: content, images (up to 5 file uploads)
+
+- `DELETE /api/journal/delete/:id`: Delete a journal entry
+  - Requires: Authentication, journal entry ID
+
+- `GET /api/journal/alljournal`: Get all journal entries for the current user
+  - Requires: Authentication
+
+- `GET /api/journal/today`: Get today's journal entry for the current user
+  - Requires: Authentication
+
+- `GET /api/journal/:id`: Get a specific journal entry
+  - Requires: Journal entry ID
+
+All routes are relative to the base URL of the API (e.g., http://localhost:3000/api).
+
 ## Data Flow
 
 1. User Authentication:
