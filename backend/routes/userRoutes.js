@@ -5,11 +5,7 @@ const { validateUserRegistration, validateUserLogin, handleValidationErrors } = 
 const upload = require("../middlewares/multerMiddleware")
 const { isAuthenticated } = require("../middlewares/authMiddleware");
 
-
-
 const { registerUser, loginUser, getUser, logoutUser } = require('../Controllers/userControllers');
-
-
 
 router.post(
   "/register",
