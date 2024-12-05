@@ -59,9 +59,8 @@ const loginUser = async (req, res) => {
 
   const user = await User.findOne({ email });
 
-  if(!user) {
-    res.status(401);
-    throw new Error("Invalid Email");
+  if (!user) {
+    return res.status(401).json({ error: "User not found" });
   }
 
   const token = user.generateJWT(user, res);
@@ -72,7 +71,13 @@ const loginUser = async (req, res) => {
     sameSite: "none",
   };
 
-  if (user && (await user.comparePassword(password))) {
+  const isMatch = (user && (await user.comparePassword(password)));
+
+  if (!isMatch) {
+    return res.status(400).json({ error: "Invalid credentials" });
+  }
+  
+  if(isMatch){
     res.cookie("token", token, options).json({
       success: true,
       message: "Login Successfull",
