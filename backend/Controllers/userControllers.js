@@ -38,7 +38,9 @@ const registerUser = async (req, res, next) => {
 
     // Respond with success
     if (user) {
-      return res.status(201).json({
+      return res
+      .status(201)
+      .json({
         success: true,
         message: "Registration successful",
         user,
@@ -78,14 +80,16 @@ const loginUser = async (req, res) => {
   }
   
   if(isMatch){
-    res.cookie("token", token, options).json({
+    res
+    .status(200)
+    .cookie("token", token, options)
+    .json({
       success: true,
       message: "Login Successfull",
       user: user,
     })
   }
 }
-
 
 const getUser = async (req, res) => {
   const user = req.user;

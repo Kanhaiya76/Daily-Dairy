@@ -3,12 +3,12 @@ const jwt = require("jsonwebtoken");
 
 const isAuthenticated = async (req, res, next) => {
   try {
-    const { token } = req.cookies;
+    const token = req.cookies.token
     
     if (!token) {
       return res.status(401).json({
         success: false,
-        message: "Please login to access this resource yo",
+        message: "Please login to access this resource",
       });
     }
   

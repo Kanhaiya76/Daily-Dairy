@@ -19,7 +19,7 @@ export const registerUser = createAsyncThunk(
         error.response?.data?.error ||
         error.response?.data?.message ||
         "An unexpected error occurred";
-      console.error("Register User Error:", error); // For debugging purposes (remove in production)
+       // For debugging purposes (remove in production)
       return rejectWithValue({ error: errorMessage });
     }
   }
