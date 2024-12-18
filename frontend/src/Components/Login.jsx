@@ -1,14 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser, clearMessage } from "../redux/slices/userSlice";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 const Login = () => {
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -69,14 +75,29 @@ const Login = () => {
             </label>
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 relative">
             <input
               name="password"
               className="border border-black p-4 text-3xl rounded-lg opacity-60"
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            {
+              showPassword ? (
+                <EyeOff
+                  size={30}
+                  className="absolute right-4 top-9 -translate-y-1/2 cursor-pointer"
+                  onClick={togglePasswordVisibility}
+                />
+              ) : (
+                <Eye
+                  size={30}
+                  className="absolute right-4 top-9 -translate-y-1/2 cursor-pointer"
+                  onClick={togglePasswordVisibility}
+                />
+              )
+            }
             <label className="text-xl tracking-widest" htmlFor="password">
               PASSWORD
             </label>
