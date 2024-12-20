@@ -1,5 +1,7 @@
 # Daily Memoir: A Personal Journal Web Application
 
+Live Link: https://memoir-a-daily-journal.onrender.com/
+
 Daily Memoir is a full-stack web application that allows users to create, manage, and reflect on their daily journal entries. It provides a secure and user-friendly platform for personal journaling with image upload capabilities.
 
 This application is built using the MERN stack (MongoDB, Express.js, React, and Node.js) and incorporates modern web development practices and tools.
