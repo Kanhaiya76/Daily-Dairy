@@ -27,7 +27,7 @@ const Navbar = () => {
                 }}
                 className="hover:cursor-pointer font-mono"
               >
-                Memoir
+                Daily Diary
               </h1>
             </div>
 

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "https://memoir-5b51.onrender.com/api/journal";
+const API_URL = "http://localhost:3000/api/journal";
 
 export const addJournal = createAsyncThunk(
   "journal/addJournal",

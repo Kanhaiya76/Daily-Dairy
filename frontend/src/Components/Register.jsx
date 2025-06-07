@@ -60,7 +60,7 @@ const Register = () => {
                 onClick={() => navigate("/")}
                 className="hover:cursor-pointer"
               >
-                Memoir
+                Daily Diary
               </h1>
             </div>
 
@@ -73,7 +73,7 @@ const Register = () => {
         <div className="flex flex-col mx-auto w-10/12 max-w-[840px] bg-white shadow-2xl shadow-black rounded-xl py-8 px-20 gap-10 mb-20 mt-40">
           <div className="flex flex-col gap-3 mb-12">
             <span className="text-center text-5xl text-black">
-              Welcome to Memoir!
+              Welcome to Daily Diary!
             </span>
             <span className="text-center text-5xl text-black">
               Let's create your account.

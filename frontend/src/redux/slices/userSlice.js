@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // Base URL for API calls
-const API_URL = "https://memoir-5b51.onrender.com/api/user"; // Adjust as needed
+const API_URL = "http://localhost:3000/api/user"; // Adjust as needed
 
 // Async Thunks for Register, Login, and Logout
 export const registerUser = createAsyncThunk(
@@ -15,6 +15,7 @@ export const registerUser = createAsyncThunk(
       const response = await axios.post(`${API_URL}/register`, userData, config);
       return response.data;
     } catch (error) {
+      console.log(error)
       const errorMessage =
         error.response?.data?.error ||
         error.response?.data?.message ||

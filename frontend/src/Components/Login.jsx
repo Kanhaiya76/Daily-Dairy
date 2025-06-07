@@ -46,7 +46,7 @@ const Login = () => {
         <div className="w-full py-6 px-28 bg-[#fb392b] text-3xl text-white flex justify-between items-center font-normal mb-16">
           <div>
             <h1 onClick={() => navigate("/")} className="hover:cursor-pointer">
-              Memoir
+            Daily Diary
             </h1>
           </div>
 

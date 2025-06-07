@@ -2,6 +2,8 @@ import React from "react";
 import { ArrowRight } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Footer from "./Footer";
+
 
 const Home = () => {
 
@@ -19,7 +21,7 @@ const Home = () => {
         <nav className="w-full fixed z-10">
           <div className="w-full py-10 px-28 bg-[#fb392b] text-3xl text-white flex justify-between items-center font-normal mb-28">
             <div>
-              <h1 onClick={() => navigate("/")} className="hover:cursor-pointer">Memoir</h1>
+              <h1 onClick={() => navigate("/")} className="hover:cursor-pointer">Daily Diary</h1>
             </div>
 
             <div className="flex gap-12 items-center">
@@ -55,6 +57,9 @@ const Home = () => {
             </div>
           </div>
         </section>
+      </div>
+      <div className="flex justify-items-center w-[80%] mt-40">
+        <Footer />
       </div>
     </div>
   );
